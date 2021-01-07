@@ -14,13 +14,10 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y,
   end_node = &m_Model.FindClosestNode(end_x, end_y);
 }
 
-// TODO 3: Implement the CalculateHValue method.
-// Tips:
-// - You can use the distance to the end_node for the h value.
-// - Node objects have a distance method to determine the distance to another
-// node.
-
-float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {}
+float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
+  return std::sqrt(std::pow(node->x - end_node->x, 2) +
+                   std::pow(node->y - end_node->y, 2));
+}
 
 // TODO 4: Complete the AddNeighbors method to expand the current node by adding
 // all unvisited neighbors to the open list. Tips:
