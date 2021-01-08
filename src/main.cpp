@@ -26,6 +26,20 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path) {
   return std::move(contents);
 }
 
+bool IsValidCoordinate(float value) { return 0.0 <= value && value <= 100.0; }
+
+float GetPoint(const std::string &name) {
+  float value;
+  do {
+    std::cout << "Please enter " + name + " in range [0,100] >> ";
+    std::cin.clear();
+    std::cin.ignore(256, '\n');
+    std::cin >> value;
+  } while (std::cin.fail() | !IsValidCoordinate(value));
+  std::cout << "Thank you! " << name << " is " << value << "\n";
+  return value;
+}
+
 int main(int argc, const char **argv) {
   std::string osm_data_file = "";
   if (argc > 1) {
@@ -51,23 +65,10 @@ int main(int argc, const char **argv) {
       osm_data = std::move(*data);
   }
 
-  float start_x, start_y, end_x, end_y;
-  char c;
-  std::string message =
-      "Please enter (start_x, start_y, end_x, end_y) in a single line. For "
-      "example: \"0,0,90,90\" >>";
-  std::cout << message;
-  while (true) {
-    std::string input;
-    getline(std::cin, input);
-    std::stringstream string_stream(input);
-    if (string_stream >> start_x >> c >> start_y >> c >> end_x >> c >> end_y) {
-      std::cout << "Thank you!\n";
-      break;
-    } else {
-      std::cout << message;
-    }
-  }
+  float start_x = GetPoint("start_x");
+  float start_y = GetPoint("start_y");
+  float end_x = GetPoint("end_x");
+  float end_y = GetPoint("end_y");
 
   // Build Model.
   RouteModel model{osm_data};
