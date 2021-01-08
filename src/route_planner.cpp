@@ -21,13 +21,13 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
   current_node->FindNeighbors();
-  for (auto neighbor : current_node->neighbors) {
+  for (auto *neighbor : current_node->neighbors) {
     neighbor->parent = current_node;
     neighbor->h_value = CalculateHValue(neighbor);
     neighbor->g_value =
         current_node->g_value + current_node->distance(*neighbor);
-    open_list.push_back(neighbor);
     neighbor->visited = true;
+    open_list.emplace_back(neighbor);
   }
 }
 
@@ -53,7 +53,7 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(
   next_node = current_node;
   auto parent = next_node->parent;
   do {
-    path_found.push_back(*next_node);
+    path_found.emplace_back(*next_node);
     distance += next_node->distance(*parent);
     next_node = parent;
     parent = next_node->parent;
