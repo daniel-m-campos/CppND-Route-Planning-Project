@@ -54,7 +54,8 @@ int main(int argc, const char **argv) {
   float start_x, start_y, end_x, end_y;
   char c;
   std::string message =
-      "Please enter \"start_x, start_y, end_x, and end_y\" >> ";
+      "Please enter (start_x, start_y, end_x, end_y) in a single line. For "
+      "example: \"0,0,90,90\" >>";
   std::cout << message;
   while (true) {
     std::string input;
